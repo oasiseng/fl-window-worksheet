@@ -2,7 +2,7 @@
 
 A free, open-source web tool that lets Florida homeowners generate a permit-ready wind pressure worksheet for replacing windows or doors in a single-family detached home — **without hiring an engineer**.
 
-The tool uses the Florida Building Code's **simplified method** (FBC Residential Code Table R301.2(2)) which the code already allows you to use directly. You don't need to be an engineer to read a code table. You just need a clean, accurate way to fill out the lookup, check your products against the required pressures, and produce a worksheet your building department can accept.
+The tool uses the Florida Building Code's **simplified method** [(FBC Residential Code Table R301.2(2))](https://up.codes/viewer/florida/fl-residential-code-2023/chapter/3/building-planning#R301.2) which the code already allows you to use directly. You don't need to be an engineer to read a code table. You just need a clean, accurate way to fill out the lookup, check your products against the required pressures, and produce a worksheet your building department can accept.
 
 The calculator is table-backed. The HTML embeds the published ASD pressure rows used by this worksheet: Table R301.2(2) wall Zones 4 and 5, Table R301.2(3) height/exposure adjustment coefficients, and Table R301.2(4) nominal garage-door loads. It does not generate pressure values from ASCE equations.
 
