@@ -171,9 +171,9 @@ We're planning a series of plain-English articles on Florida residential window 
 
 ## Maintained by
 
-[**Oasis Engineering LLC**](https://oasisengineering.com) · Florida licensed structural and wind engineering firm · COA No. 35420 · Licensed in 37 states
+[**Oasis Engineering LLC**](https://oasisengineering.com) · Florida licensed structural and wind engineering firm.
 
-We build this tool because we'd rather help homeowners do simple permits correctly than charge them $300 for a code-table lookup. When you have a project that actually needs engineering — multi-story, HVHZ, coastal, complex — we're here for that work.
+We build this tool because we'd rather help homeowners do simple permits correctly than charge them a few hundred dollars for a code-table lookup. When you have a project that actually needs engineering — multi-story, HVHZ, coastal, complex — we're here for that work.
 
 ---
 
