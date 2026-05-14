@@ -4,6 +4,8 @@ A free, open-source web tool that lets Florida homeowners generate a permit-read
 
 The tool uses the Florida Building Code's **simplified method** (FBC Residential Code Table R301.2(2)) which the code already allows you to use directly. You don't need to be an engineer to read a code table. You just need a clean, accurate way to fill out the lookup, check your products against the required pressures, and produce a worksheet your building department can accept.
 
+The calculator is table-backed. The HTML embeds the published ASD pressure rows used by this worksheet: Table R301.2(2) wall Zones 4 and 5, Table R301.2(3) height/exposure adjustment coefficients, and Table R301.2(4) nominal garage-door loads. It does not generate pressure values from ASCE equations.
+
 That's what this tool does. Nothing more, nothing less.
 
 ---
@@ -62,7 +64,7 @@ Everything a typical Florida residential building department asks for in a windo
 
 - **Project information** — address, owner, county, date
 - **Building wind design data** — wind speed, exposure, height, risk category, enclosure, zone 5 width, reporting basis
-- **Opening schedule with pressure check** — one row per window or door, showing required pressure (from FBC R301.2(2)) vs. your product's tested DP, with a clear PASS / FAIL flag
+- **Opening schedule with pressure check** — one row per window or door, showing required pressure vs. your product's tested DP, the exact FBC table row/column used, and a clear PASS / FAIL flag
 - **Method used** — checkbox confirming you're using the FBC R301.2(2) simplified-method path (the default homeowner path)
 - **Owner-builder certification statement** — pre-filled with your info, ready to sign
 - **Code references** — every code section cited so a reviewer can verify
@@ -123,7 +125,7 @@ If any of those apply to you, contact Oasis Engineering or another licensed Flor
 
 Florida's permitting system can feel intimidating to homeowners, but for a typical single-story window replacement it shouldn't be. The Florida Building Code intentionally provides a simplified method specifically so homeowners and small contractors don't need an engineer for every routine job. The code text is publicly available. The tables are published. The owner-builder exemption is established law.
 
-The friction comes from the **format**. Most homeowners don't know how to find their wind speed, read Table R301.2(2), interpolate effective wind areas, determine Zone 5 widths, convert ASD ↔ LRFD pressures, or write a worksheet a reviewer will accept on the first pass. So they hire someone to do the paperwork, paying for what is effectively a code-table lookup.
+The friction comes from the **format**. Most homeowners don't know how to find their wind speed, read Table R301.2(2), select the appropriate effective wind area row, determine Zone 5 widths, convert ASD ↔ LRFD pressures, or write a worksheet a reviewer will accept on the first pass. So they hire someone to do the paperwork, paying for what is effectively a code-table lookup.
 
 This tool removes that friction. If you have a simple house and a basic understanding of what you're installing, you should be able to handle the permit yourself.
 
@@ -154,7 +156,9 @@ We're planning a series of plain-English articles on Florida residential window 
 - **Privacy.** Everything stays on your device. Nothing is transmitted, logged, or stored anywhere outside your browser
 - **Browser support.** Chrome, Edge, Firefox, Safari — all work. Print rendering is most reliable in Chrome
 - **Mobile friendly.** Designed to work on phones, since you might be at the home depot looking up product approvals on your phone
-- **Computation.** Wind pressures are computed using the ASCE 7-22 methodology that FBC Table R301.2(2) is derived from. Values match the published table values within standard rounding. All output is presented in ASD basis (per FBC R301.2(2) convention)
+- **Computation.** Wind pressures are looked up from embedded FBC Residential Code table rows, not generated from ASCE formulas. Wall openings use Table R301.2(2) wall Zones 4 and 5, then multiply by the Table R301.2(3) height/exposure coefficient. Garage doors use Table R301.2(4), then the same Table R301.2(3) adjustment. All output is ASD basis.
+- **No pressure interpolation.** If the entered wind speed or mean roof height falls between published columns/rows, the tool uses the next higher published table column/row. For wall effective wind area, it uses the lower published EWA row, which is the conservative table option identified in the code footnote. The worksheet prints the actual lookup row/column used.
+- **Embedded table limits.** Wall opening lookup is limited to Table R301.2(2) wall Zones 4 and 5, EWA rows 10/20/50/100 sf, and wind-speed columns through 180 mph. Garage-door lookup is limited to the published 9 ft x 7 ft and 16 ft x 7 ft rows in Table R301.2(4).
 - **Open source.** Released under the MIT License. Fork it, modify it, host your own copy. If you find a bug or have a suggestion, open an issue
 
 ---
@@ -167,9 +171,9 @@ We're planning a series of plain-English articles on Florida residential window 
 
 ## Maintained by
 
-[**Oasis Engineering LLC**](https://oasisengineering.com) · Florida licensed structural and wind engineering firm 
+[**Oasis Engineering LLC**](https://oasisengineering.com) · Florida licensed structural and wind engineering firm · COA No. 35420 · Licensed in 37 states
 
-We build this tool because we'd rather help homeowners do simple permits correctly than charge them a few hundred dollars for a code-table lookup. When you have a project that actually needs engineering — multi-story, HVHZ, coastal, complex — we're here for that work.
+We build this tool because we'd rather help homeowners do simple permits correctly than charge them $300 for a code-table lookup. When you have a project that actually needs engineering — multi-story, HVHZ, coastal, complex — we're here for that work.
 
 ---
 

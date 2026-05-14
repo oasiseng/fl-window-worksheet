@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Florida Residential Window Replacement Worksheet — FBC R301.2(2) Lookup Tool</title>
+<meta name="description" content="Free homeowner tool for generating a Florida residential window replacement permit worksheet using the FBC R301.2(2) simplified method. For single-family detached homes. No PE required.">
+<style>
+:root{
+  --green:#1a5c4c;
+  --green-light:#e7f0ed;
+  --green-dark:#0e3a30;
+  --warn:#a8431f;
+  --warn-bg:#fdf3ee;
+  --danger:#a01717;
+  --danger-bg:#fbe9e9;
+  --ok:#1a7a3a;
+  --ok-bg:#e8f5ec;
+  --text:#1a1a1a;
+  --muted:#5a5a5a;
+  --bg:#fafaf7;
+  --card:#ffffff;
+  --border:#d8d8d2;
+  --font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-mono:"SF Mono",Menlo,Monaco,"Courier New",monospace;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:16px;line-height:1.5;}
+.container{max-width:760px;margin:0 auto;padding:1rem;}
+header.brand{
+  text-align:center;
+  padding:1.5rem 1rem 1rem;
+  border-bottom:1px solid var(--border);
+  background:var(--card);
+}
+header.brand h1{
+  margin:0 0 0.3rem;
+  font-size:1.5rem;
+  color:var(--green-dark);
+  line-height:1.2;
+}
+header.brand .sub{
+  margin:0;
+  color:var(--muted);
+  font-size:0.85rem;
+}
+
+/* Progress bar */
+.progress{
+  display:flex;
+  gap:0.4rem;
+  padding:0.8rem 0;
+  margin-bottom:1rem;
+}
+.progress .pstep{
+  flex:1;
+  padding:0.5rem 0.3rem;
+  text-align:center;
+  font-size:0.7rem;
+  font-weight:600;
+  color:var(--muted);
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:6px;
+  text-transform:uppercase;
+  letter-spacing:0.04em;
+}
+.progress .pstep.active{
+  background:var(--green);
+  color:#fff;
+  border-color:var(--green);
+}
+.progress .pstep.done{
+  background:var(--green-light);
+  color:var(--green-dark);
+  border-color:var(--green);
+}
+@media (max-width:560px){
+  .progress .pstep{font-size:0.62rem;padding:0.4rem 0.15rem;}
+}
+
+/* Step cards */
+.step{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:1.5rem 1.25rem;
+  margin-bottom:1rem;
+  display:none;
+}
+.step.active{display:block;}
+.step h2{
+  margin:0 0 0.5rem;
+  font-size:1.25rem;
+  color:var(--green-dark);
+}
+.step h3{
+  margin:1.25rem 0 0.5rem;
+  font-size:1.05rem;
+  color:var(--green-dark);
+}
+.step p{margin:0.5rem 0;}
+.step .lede{
+  font-size:0.95rem;
+  color:var(--muted);
+  margin-bottom:1rem;
+}
+
+/* Form fields */
+.field{margin-bottom:1rem;}
+.field label{
+  display:block;
+  font-weight:600;
+  margin-bottom:0.3rem;
+  font-size:0.9rem;
+}
+.field input[type="text"],.field input[type="number"],.field select,.field textarea{
+  width:100%;
+  padding:0.6rem 0.7rem;
+  border:1px solid var(--border);
+  border-radius:6px;
+  font-size:1rem;
+  font-family:inherit;
+  background:#fff;
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  outline:2px solid var(--green);
+  outline-offset:1px;
+}
+.field .hint{
+  display:block;
+  font-size:0.78rem;
+  color:var(--muted);
+  margin-top:0.3rem;
+}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;}
+@media (max-width:560px){.row{grid-template-columns:1fr;}}
+
+/* Checkbox list (eligibility) */
+.crit-list{
+  list-style:none;
+  padding:0;
+  margin:0.5rem 0 1.25rem;
+}
+.crit-list li{
+  display:flex;
+  align-items:flex-start;
+  gap:0.6rem;
+  padding:0.5rem 0;
+  border-bottom:1px solid var(--border);
+  font-size:0.9rem;
+}
+.crit-list li:last-child{border-bottom:none;}
+.crit-list li::before{
+  content:"✓";
+  color:var(--green);
+  font-weight:700;
+  flex-shrink:0;
+  width:1.2rem;
+  font-size:1rem;
+}
+
+.confirm-box{
+  background:var(--green-light);
+  border:1px solid var(--green);
+  border-radius:8px;
+  padding:1rem;
+  margin:1rem 0;
+}
+.confirm-box label{
+  display:flex;
+  align-items:flex-start;
+  gap:0.6rem;
+  font-weight:600;
+  cursor:pointer;
+}
+.confirm-box input[type="checkbox"]{
+  margin-top:0.25rem;
+  width:18px;
+  height:18px;
+  flex-shrink:0;
+  accent-color:var(--green);
+}
+
+/* Buttons */
+.btn-row{display:flex;gap:0.6rem;justify-content:space-between;margin-top:1.5rem;flex-wrap:wrap;}
+button.btn{
+  padding:0.7rem 1.2rem;
+  border:none;
+  border-radius:6px;
+  font-size:0.95rem;
+  font-weight:600;
+  font-family:inherit;
+  cursor:pointer;
+  transition:all 0.15s;
+}
+button.btn-primary{background:var(--green);color:#fff;}
+button.btn-primary:hover:not(:disabled){background:var(--green-dark);}
+button.btn-primary:disabled{background:#bbb;cursor:not-allowed;}
+button.btn-secondary{background:#e8e8e2;color:var(--text);}
+button.btn-secondary:hover{background:#d8d8d2;}
+button.btn-danger{background:var(--danger);color:#fff;}
+button.btn-mini{
+  padding:0.3rem 0.6rem;
+  font-size:0.78rem;
+  background:transparent;
+  color:var(--danger);
+  border:1px solid var(--danger);
+  border-radius:4px;
+  cursor:pointer;
+}
+
+/* Callouts */
+.callout{
+  padding:0.9rem 1rem;
+  border-radius:8px;
+  margin:1rem 0;
+  border-left:4px solid;
+  font-size:0.9rem;
+}
+.callout strong{display:block;margin-bottom:0.3rem;}
+.callout-warn{
+  background:var(--warn-bg);
+  border-color:var(--warn);
+  color:#5d2810;
+}
+.callout-danger{
+  background:var(--danger-bg);
+  border-color:var(--danger);
+  color:#5d0e0e;
+}
+.callout-ok{
+  background:var(--ok-bg);
+  border-color:var(--ok);
+  color:#0e3d1d;
+}
+.callout-info{
+  background:var(--green-light);
+  border-color:var(--green);
+  color:var(--green-dark);
+}
+
+/* Out of scope screen */
+.oos-banner{
+  background:var(--warn-bg);
+  border:2px solid var(--warn);
+  border-radius:10px;
+  padding:1.5rem;
+  text-align:center;
+}
+.oos-banner h2{
+  color:var(--warn);
+  margin-top:0;
+}
+.oos-reason{
+  background:#fff;
+  padding:0.8rem;
+  border-radius:6px;
+  margin:1rem 0;
+  font-family:var(--font-mono);
+  font-size:0.85rem;
+  text-align:left;
+}
+.oos-cta{
+  margin-top:1rem;
+}
+.oos-cta a{
+  display:inline-block;
+  padding:0.8rem 1.5rem;
+  background:var(--green);
+  color:#fff;
+  text-decoration:none;
+  border-radius:6px;
+  font-weight:600;
+  margin:0.4rem;
+}
+
+/* Opening list */
+.opening-card{
+  background:#fafaf7;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:1rem;
+  margin-bottom:0.8rem;
+}
+.opening-card-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:0.6rem;
+}
+.opening-card-head strong{color:var(--green-dark);}
+
+/* Status badges */
+.badge{
+  display:inline-block;
+  padding:0.15rem 0.5rem;
+  border-radius:4px;
+  font-size:0.75rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.04em;
+}
+.badge-pass{background:var(--ok-bg);color:var(--ok);}
+.badge-fail{background:var(--danger-bg);color:var(--danger);}
+.badge-warn{background:var(--warn-bg);color:var(--warn);}
+.lookup-note{
+  display:block;
+  margin-top:0.2rem;
+  color:var(--muted);
+  font-size:0.68rem;
+  line-height:1.25;
+}
+
+/* Worksheet output (printable) */
+.worksheet{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:1.5rem;
+  font-size:0.85rem;
+}
+.worksheet h2{
+  margin-top:0;
+  text-align:center;
+  color:var(--green-dark);
+  font-size:1.2rem;
+  border-bottom:2px solid var(--green);
+  padding-bottom:0.5rem;
+}
+.worksheet h3{
+  margin:1rem 0 0.4rem;
+  font-size:0.95rem;
+  color:var(--green-dark);
+  text-transform:uppercase;
+  letter-spacing:0.04em;
+}
+.worksheet .ws-row{
+  display:flex;
+  justify-content:space-between;
+  border-bottom:1px dotted var(--border);
+  padding:0.25rem 0;
+}
+.worksheet .ws-row .ws-label{font-weight:600;color:var(--muted);}
+.worksheet table{
+  width:100%;
+  border-collapse:collapse;
+  margin:0.5rem 0;
+  font-size:0.78rem;
+}
+.worksheet table th,.worksheet table td{
+  border:1px solid #c0c0c0;
+  padding:0.35rem 0.4rem;
+  text-align:left;
+}
+.worksheet table th{
+  background:#f0efe9;
+  font-weight:700;
+}
+.worksheet .cert-block{
+  background:#fafaf7;
+  border:1px solid var(--border);
+  padding:0.8rem;
+  margin:0.8rem 0;
+  font-size:0.78rem;
+}
+.worksheet .sign-line{
+  border-bottom:1px solid #333;
+  display:inline-block;
+  min-width:240px;
+  margin:0 0.5rem;
+}
+.worksheet .code-refs{
+  font-size:0.72rem;
+  color:var(--muted);
+  margin-top:1rem;
+  padding-top:0.8rem;
+  border-top:1px solid var(--border);
+}
+.worksheet .code-refs li{margin:0.2rem 0;}
+
+/* Help / FAQ pop-out */
+details.help{
+  margin:0.5rem 0;
+  background:var(--green-light);
+  border-radius:6px;
+  padding:0.4rem 0.8rem;
+  font-size:0.85rem;
+}
+details.help summary{
+  cursor:pointer;
+  font-weight:600;
+  color:var(--green-dark);
+  padding:0.3rem 0;
+}
+details.help[open] summary{margin-bottom:0.5rem;}
+
+/* SVG diagrams (zone illustration) */
+.diag{
+  display:block;
+  margin:0.8rem auto;
+  max-width:100%;
+}
+
+/* Footer */
+footer.foot{
+  margin:2rem auto 1rem;
+  padding:1rem;
+  font-size:0.78rem;
+  color:var(--muted);
+  text-align:center;
+  border-top:1px solid var(--border);
+  max-width:760px;
+}
+footer.foot a{color:var(--green);}
+
+/* Print styles */
+@media print{
+  body{background:#fff;}
+  header.brand,.progress,.btn-row,.no-print,footer.foot,.step:not(#step-output){display:none !important;}
+  .step{border:none;padding:0;margin:0;}
+  #step-output{display:block !important;}
+  .worksheet{
+    border:none;
+    box-shadow:none;
+    padding:0;
+    font-size:10pt;
+  }
+  .container{max-width:none;padding:0.4in;}
+  @page{size:letter;margin:0.5in;}
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+</style>
+</head>
+<body>
+
+<header class="brand">
+  <h1>Florida Residential Window Replacement Worksheet</h1>
+  <p class="sub">FBC R301.2(2) simplified method · Single-family detached homes · DIY / owner-builder friendly</p>
+</header>
+
+<div class="container">
+
+  <div class="progress" id="progressBar">
+    <div class="pstep active" data-step="1">1. Eligibility</div>
+    <div class="pstep" data-step="2">2. Project</div>
+    <div class="pstep" data-step="3">3. Windows</div>
+    <div class="pstep" data-step="4">4. Worksheet</div>
+  </div>
+
+  <!-- ================== STEP 1: ELIGIBILITY ================== -->
+  <section class="step active" id="step-1">
+    <h2>Step 1: Is this tool right for your project?</h2>
+    <p class="lede">This worksheet uses the Florida Building Code <strong>simplified method</strong> (FBC Residential Code Table R301.2(2)) for determining wind pressures on window and door openings. It works only for a specific kind of project.</p>
+
+    <h3>Your project must meet ALL of these criteria:</h3>
+    <ul class="crit-list">
+      <li><strong>Single-family detached home.</strong> Not a condo, townhouse, duplex, mobile home, or commercial building.</li>
+      <li><strong>Single story.</strong> Mean roof height 30 feet or less (measured from grade to average roof height).</li>
+      <li><strong>Simple shape.</strong> Rectangular floor plan with a normal gable or hip roof. Not L-shaped, not multi-level, no significant additions or wings.</li>
+      <li><strong>Enclosed building.</strong> Has walls on all sides with normal-sized openings. Not an open carport, pavilion, or pole barn.</li>
+      <li><strong>Not in HVHZ.</strong> Property is NOT in Miami-Dade County, Broward County, or Monroe County (the High-Velocity Hurricane Zone). These counties have stricter requirements and require a Miami-Dade NOA plus PE-sealed installation engineering.</li>
+      <li><strong>Not directly on the coast.</strong> Property is NOT within 600 feet of the Atlantic Ocean or Gulf of Mexico shoreline (Exposure D conditions).</li>
+      <li><strong>You own and live in the home.</strong> It's your primary residence and the property is in your personal name (not an LLC, trust, or rental). This is required for the Florida owner-builder exemption (FS 489.103(7)).</li>
+      <li><strong>Replacing 25% or less of your windows/doors per year.</strong> If you replace more than 25% of the glazed opening area in a 12-month period and your house was permitted before March 1, 2002, you trigger additional opening-protection requirements.</li>
+    </ul>
+
+    <div class="confirm-box">
+      <label>
+        <input type="checkbox" id="eligibility-confirm">
+        <span>I confirm my project meets <strong>ALL</strong> of the above criteria.</span>
+      </label>
+    </div>
+
+    <div class="callout callout-warn">
+      <strong>⚠ If your project does NOT meet all criteria</strong>
+      You need a licensed Florida Professional Engineer to prepare a sealed wind-pressure letter for your permit submittal. Oasis Engineering provides this service across Florida with 24-48 hour turnaround. <a href="https://oasisengineering.com" target="_blank" rel="noopener">Contact Oasis Engineering →</a>
+    </div>
+
+    <details class="help">
+      <summary>Why these restrictions?</summary>
+      <p>The simplified method (FBC R301.2(2)) is a pre-calculated lookup table the Florida Building Code provides for typical residential cases. Outside its scope — multi-story buildings, complex geometries, HVHZ counties, coastal Exposure D, open buildings — the table doesn't apply and a site-specific engineering analysis is legally required.</p>
+      <p>This tool intentionally refuses to operate outside the simplified-method scope to keep you on the right side of the code and the law (Florida Statute Ch. 471 governing the practice of engineering).</p>
+    </details>
+
+    <div class="btn-row">
+      <span></span>
+      <button class="btn btn-primary" id="btn-step1-next" disabled>Continue →</button>
+    </div>
+  </section>
+
+  <!-- ================== STEP 2: PROJECT INFO ================== -->
+  <section class="step" id="step-2">
+    <h2>Step 2: Tell us about your project</h2>
+    <p class="lede">Basic info goes on the permit worksheet so the building department can identify your project.</p>
+
+    <h3>Property</h3>
+    <div class="field">
+      <label>Site address</label>
+      <input type="text" id="f-address" placeholder="123 Main St, Anytown, FL 12345">
+    </div>
+    <div class="field">
+      <label>Property owner name</label>
+      <input type="text" id="f-owner" placeholder="Your full legal name">
+      <span class="hint">Must match the name on the property deed (for owner-builder permit eligibility).</span>
+    </div>
+    <div class="field">
+      <label>Florida county</label>
+      <select id="f-county">
+        <option value="">-- Select county --</option>
+      </select>
+      <span class="hint">Used to suggest typical wind speed and check for HVHZ status.</span>
+    </div>
+
+    <h3>Wind Speed Lookup</h3>
+    <p>You need the <strong>Ultimate Design Wind Speed (V<sub>ult</sub>)</strong> for your exact property address. This is a single number in miles per hour.</p>
+
+    <div class="callout callout-info">
+      <strong>How to find your wind speed (free, takes 60 seconds):</strong>
+      <ol style="margin:0.4rem 0 0 1rem;padding:0;">
+        <li>Open the <a href="https://ascehazardtool.org" target="_blank" rel="noopener">ASCE 7 Hazard Tool</a> (official)</li>
+        <li>Click "Wind" → select "ASCE 7-22" → select "Risk Category II"</li>
+        <li>Drop a pin on your house (search by address)</li>
+        <li>Copy the "Wind Speed (V)" value in mph</li>
+      </ol>
+      <p style="margin:0.5rem 0 0;">Alternatively, use <a href="https://windcalculations.com" target="_blank" rel="noopener">windcalculations.com</a> — free wind speed tool maintained by Oasis Engineering.</p>
+    </div>
+
+    <div class="field">
+      <label>Ultimate Design Wind Speed (V<sub>ult</sub>) in mph</label>
+      <input type="number" id="f-vult" min="90" max="200" step="1" placeholder="e.g. 150">
+      <span class="hint" id="vult-hint">Typical Florida residential range: 130–170 mph. The calculator uses the next higher published table wind-speed column; it does not interpolate pressure values.</span>
+    </div>
+
+    <h3>Building Information</h3>
+    <div class="row">
+      <div class="field">
+        <label>Mean roof height (ft)</label>
+        <input type="number" id="f-height" min="8" max="30" step="0.5" placeholder="e.g. 12">
+        <span class="hint">Average of eave height and ridge height. Must be 30 ft or less.</span>
+      </div>
+      <div class="field">
+        <label>Exposure category</label>
+        <select id="f-exposure">
+          <option value="">-- Select --</option>
+          <option value="B">B — Suburban / wooded</option>
+          <option value="C">C — Open / scattered obstructions</option>
+        </select>
+        <span class="hint">B = typical suburban neighborhood with trees and houses; C = open land with few obstructions.</span>
+      </div>
+    </div>
+
+    <details class="help">
+      <summary>How do I tell Exposure B from Exposure C?</summary>
+      <p><strong>Exposure B:</strong> Suburban or urban areas, wooded areas, neighborhoods with single-family houses and trees in all four directions for at least 1,500 feet from your property. Most inland Florida neighborhoods.</p>
+      <p><strong>Exposure C:</strong> Flat open terrain with scattered obstructions less than 30 ft tall. Includes flat open country, grasslands, and many areas near (but not directly on) the water. When in doubt, use C — it's more conservative.</p>
+      <p><strong>Exposure D</strong> (within 600 ft of open ocean) is NOT supported by this tool. If your home is directly coastal, you need a PE.</p>
+    </details>
+
+    <div class="field">
+      <label>Longest exterior wall dimension (ft)</label>
+      <input type="number" id="f-wall" min="10" max="200" step="1" placeholder="e.g. 50">
+      <span class="hint">The longest single straight wall of your home. Used to compute the Zone 5 corner width.</span>
+    </div>
+
+    <div id="zone5-info" class="callout callout-info" style="display:none;">
+      <strong>Your Zone 5 corner width: <span id="zone5-width">—</span> feet</strong>
+      Any window or door located within <span id="zone5-width-2">—</span> feet of a building corner is in Zone 5 (corner — higher wind pressures). Everything farther from corners is in Zone 4 (interior).
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" id="btn-step2-back">← Back</button>
+      <button class="btn btn-primary" id="btn-step2-next">Continue →</button>
+    </div>
+  </section>
+
+  <!-- ================== STEP 3: WINDOWS ================== -->
+  <section class="step" id="step-3">
+    <h2>Step 3: List your windows and doors</h2>
+    <p class="lede">For each opening you plan to replace, enter its location, size, and the product you intend to install. The tool will compute the required wind pressure (from FBC R301.2(2)) and check it against your product's tested design pressure.</p>
+
+    <h3>What you need before starting</h3>
+    <ul style="font-size:0.88rem;">
+      <li>Width and height of each opening (rough opening size, in inches)</li>
+      <li>The <strong>Florida Product Approval number</strong> (FL#) for the window/door you plan to install — look it up at <a href="https://www.floridabuilding.org/pr/pr_app_srch.aspx" target="_blank" rel="noopener">floridabuilding.org</a></li>
+      <li>The <strong>tested design pressure (DP)</strong> from the product approval — looks like "+45/-50 psf"</li>
+    </ul>
+
+    <details class="help">
+      <summary>What is "Effective Wind Area" (EWA)?</summary>
+      <p>EWA is the surface area used to determine wind pressure for a window or door. For our purposes, EWA = width × height of the opening (in square feet). Larger openings have lower required pressures than smaller ones because wind pressure averages out over bigger surfaces.</p>
+    </details>
+
+    <details class="help">
+      <summary>What's the difference between Zone 4 and Zone 5?</summary>
+      <p><strong>Zone 4 = interior wall.</strong> Windows and doors in the middle portion of any wall.</p>
+      <p><strong>Zone 5 = corner.</strong> Windows and doors within the "corner width" of a building corner. Wind pressures (especially negative/suction) are higher here because wind accelerates around corners.</p>
+      <svg class="diag" viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+        <rect x="40" y="40" width="320" height="140" fill="none" stroke="#1a5c4c" stroke-width="2"/>
+        <rect x="40" y="40" width="40" height="140" fill="#fdf3ee" opacity="0.7"/>
+        <rect x="320" y="40" width="40" height="140" fill="#fdf3ee" opacity="0.7"/>
+        <text x="60" y="115" text-anchor="middle" font-size="11" font-weight="700" fill="#a8431f">Z5</text>
+        <text x="340" y="115" text-anchor="middle" font-size="11" font-weight="700" fill="#a8431f">Z5</text>
+        <text x="200" y="115" text-anchor="middle" font-size="12" font-weight="700" fill="#1a5c4c">Zone 4 (interior wall)</text>
+        <text x="200" y="200" text-anchor="middle" font-size="10" fill="#5a5a5a">← Wall length (longest side) →</text>
+        <line x1="80" y1="40" x2="80" y2="180" stroke="#a8431f" stroke-dasharray="3,3"/>
+        <line x1="320" y1="40" x2="320" y2="180" stroke="#a8431f" stroke-dasharray="3,3"/>
+        <text x="60" y="33" text-anchor="middle" font-size="9" fill="#a8431f">'a' ft</text>
+        <text x="340" y="33" text-anchor="middle" font-size="9" fill="#a8431f">'a' ft</text>
+      </svg>
+    </details>
+
+    <div id="opening-list"></div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" id="btn-add-opening" type="button">+ Add another opening</button>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" id="btn-step3-back">← Back</button>
+      <button class="btn btn-primary" id="btn-step3-next">Generate Worksheet →</button>
+    </div>
+  </section>
+
+  <!-- ================== STEP 4: WORKSHEET OUTPUT ================== -->
+  <section class="step" id="step-4">
+    <h2>Step 4: Your Worksheet</h2>
+    <p class="lede no-print">Review the worksheet below. If everything looks correct, print it (or save as PDF) and submit it with your permit application along with the supporting documents listed at the bottom.</p>
+
+    <div class="btn-row no-print">
+      <button class="btn btn-secondary" id="btn-step4-back">← Back to edit</button>
+      <button class="btn btn-primary" id="btn-print">🖨 Print / Save as PDF</button>
+    </div>
+
+    <div id="worksheet-output"></div>
+
+    <div class="callout callout-warn no-print">
+      <strong>Before you submit</strong>
+      <ul style="margin:0.4rem 0 0 1rem;padding:0;font-size:0.85rem;">
+        <li>Verify with your local building department that they accept the FBC R301.2(2) simplified method for residential window replacement. Most non-HVHZ Florida jurisdictions do.</li>
+        <li>Attach your <strong>Florida Product Approval document(s)</strong> showing the manufacturer's tested DPs.</li>
+        <li>Complete the <strong>Owner/Builder Affidavit</strong> required by your jurisdiction (downloadable from your building department's website).</li>
+        <li>If your project total exceeds $2,500, file a <strong>Notice of Commencement</strong> with your county clerk before the first inspection.</li>
+        <li>This worksheet does <strong>not</strong> replace local department requirements. If your jurisdiction has its own worksheet format, you may need to transfer these values to their form.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================== OUT-OF-SCOPE BLOCK ================== -->
+  <section class="step" id="step-oos">
+    <div class="oos-banner">
+      <h2>⚠ This Project Needs a Professional Engineer</h2>
+      <p>Based on what you've entered, your project falls outside the simplified method (FBC R301.2(2)) and requires a Florida-licensed PE to prepare a sealed wind pressure letter.</p>
+      <div class="oos-reason" id="oos-reason-text">
+        Reason: [will fill in dynamically]
+      </div>
+      <p>This isn't a hard rule we made up — the Florida Building Code requires it. Going forward without a PE in this scope risks a failed inspection, permit rejection, or worse, problems with insurance claims or home sales later.</p>
+      <div class="oos-cta">
+        <a href="https://oasisengineering.com" target="_blank" rel="noopener">Get a sealed letter from Oasis Engineering →</a>
+      </div>
+      <p style="font-size:0.8rem;color:var(--muted);margin-top:1.5rem;">Oasis Engineering provides sealed wind-pressure letters for Florida residential projects with 24-48 hour turnaround. Multi-story, complex geometry, HVHZ, coastal, and commercial work all supported.</p>
+      <div class="btn-row" style="justify-content:center;">
+        <button class="btn btn-secondary" id="btn-oos-back">← Go Back &amp; Edit</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="foot">
+  <p><strong>This is a free tool. Not engineering certification. Not legal advice.</strong></p>
+  <p>This worksheet provides a Florida Building Code Table R301.2(2) simplified-method lookup for residential window replacement permit submittals. It is intended for use by property owners under the Florida owner-builder exemption (FS 489.103(7)). It does not constitute engineering services, an engineer-client relationship, or a substitute for a licensed Florida Professional Engineer where one is required by code or jurisdiction.</p>
+  <p>Building departments may require additional documentation or have local amendments not reflected in this tool. Always verify requirements with your local building department before submitting.</p>
+  <p>Maintained by <a href="https://oasisengineering.com" target="_blank" rel="noopener">Oasis Engineering LLC</a> — Florida licensed structural and wind engineering firm. Open source under the MIT License. v1.0 · 2026</p>
+</footer>
+
+<script>
+// =====================================================================
+// State
+// =====================================================================
+const state = {
+  step: 1,
+  address: '', owner: '', county: '',
+  vult: null, height: null, exposure: '', wallLen: null,
+  zone5Width: null,
+  openings: []
+};
+
+let nextOpeningId = 1;
+
+// =====================================================================
+// Florida counties + HVHZ flag + typical wind speed hints
+// (Wind speeds are illustrative — user MUST look up exact value)
+// =====================================================================
+const FL_COUNTIES = [
+  {n:"Alachua",         v:130, hvhz:false},
+  {n:"Baker",           v:120, hvhz:false},
+  {n:"Bay",             v:140, hvhz:false},
+  {n:"Bradford",        v:120, hvhz:false},
+  {n:"Brevard",         v:145, hvhz:false},
+  {n:"Broward",         v:170, hvhz:true},
+  {n:"Calhoun",         v:130, hvhz:false},
+  {n:"Charlotte",       v:150, hvhz:false},
+  {n:"Citrus",          v:135, hvhz:false},
+  {n:"Clay",            v:125, hvhz:false},
+  {n:"Collier",         v:165, hvhz:false},
+  {n:"Columbia",        v:120, hvhz:false},
+  {n:"DeSoto",          v:140, hvhz:false},
+  {n:"Dixie",           v:135, hvhz:false},
+  {n:"Duval",           v:130, hvhz:false},
+  {n:"Escambia",        v:155, hvhz:false},
+  {n:"Flagler",         v:140, hvhz:false},
+  {n:"Franklin",        v:140, hvhz:false},
+  {n:"Gadsden",         v:125, hvhz:false},
+  {n:"Gilchrist",       v:125, hvhz:false},
+  {n:"Glades",          v:145, hvhz:false},
+  {n:"Gulf",            v:140, hvhz:false},
+  {n:"Hamilton",        v:115, hvhz:false},
+  {n:"Hardee",          v:135, hvhz:false},
+  {n:"Hendry",          v:150, hvhz:false},
+  {n:"Hernando",        v:135, hvhz:false},
+  {n:"Highlands",       v:140, hvhz:false},
+  {n:"Hillsborough",    v:145, hvhz:false},
+  {n:"Holmes",          v:130, hvhz:false},
+  {n:"Indian River",    v:155, hvhz:false},
+  {n:"Jackson",         v:125, hvhz:false},
+  {n:"Jefferson",       v:125, hvhz:false},
+  {n:"Lafayette",       v:120, hvhz:false},
+  {n:"Lake",            v:130, hvhz:false},
+  {n:"Lee",             v:155, hvhz:false},
+  {n:"Leon",            v:125, hvhz:false},
+  {n:"Levy",            v:130, hvhz:false},
+  {n:"Liberty",         v:125, hvhz:false},
+  {n:"Madison",         v:120, hvhz:false},
+  {n:"Manatee",         v:145, hvhz:false},
+  {n:"Marion",          v:130, hvhz:false},
+  {n:"Martin",          v:165, hvhz:false},
+  {n:"Miami-Dade",      v:175, hvhz:true},
+  {n:"Monroe",          v:180, hvhz:true},
+  {n:"Nassau",          v:130, hvhz:false},
+  {n:"Okaloosa",        v:150, hvhz:false},
+  {n:"Okeechobee",      v:145, hvhz:false},
+  {n:"Orange",          v:135, hvhz:false},
+  {n:"Osceola",         v:135, hvhz:false},
+  {n:"Palm Beach",      v:170, hvhz:false},
+  {n:"Pasco",           v:140, hvhz:false},
+  {n:"Pinellas",        v:150, hvhz:false},
+  {n:"Polk",            v:135, hvhz:false},
+  {n:"Putnam",          v:130, hvhz:false},
+  {n:"Santa Rosa",      v:155, hvhz:false},
+  {n:"Sarasota",        v:150, hvhz:false},
+  {n:"Seminole",        v:135, hvhz:false},
+  {n:"St. Johns",       v:140, hvhz:false},
+  {n:"St. Lucie",       v:160, hvhz:false},
+  {n:"Sumter",          v:130, hvhz:false},
+  {n:"Suwannee",        v:115, hvhz:false},
+  {n:"Taylor",          v:130, hvhz:false},
+  {n:"Union",           v:120, hvhz:false},
+  {n:"Volusia",         v:140, hvhz:false},
+  {n:"Wakulla",         v:130, hvhz:false},
+  {n:"Walton",          v:145, hvhz:false},
+  {n:"Washington",      v:130, hvhz:false}
+];
+
+// =====================================================================
+// FBC Residential 8th Edition (2023) table-backed wind pressure lookup.
+// Values below are embedded from the published R301.2 tables as ASD psf
+// values. Pressure values are not derived from ASCE equations in this tool.
+// =====================================================================
+const R301_2_2_WIND_SPEEDS = [90,95,100,105,110,115,120,130,140,150,160,170,180];
+const R301_2_2_EWA_ROWS = [10,20,50,100];
+
+const R301_2_2_WALL_TABLE_ROWS = [
+  {zone:'4', ewa:10, values:[[8.7,-9.5],[9.7,-10.6],[10.8,-11.7],[11.9,-12.9],[13.1,-14.2],[14.3,-15.5],[15.5,-16.9],[18.2,-19.8],[21.2,-22.9],[24.3,-26.3],[27.6,-30.0],[31.2,-33.8],[35.0,-37.9]]},
+  {zone:'4', ewa:20, values:[[8.3,-9.1],[9.3,-10.1],[10.3,-11.2],[11.4,-12.4],[12.5,-13.6],[13.6,-14.8],[14.8,-16.2],[17.4,-19.0],[20.2,-22.0],[23.2,-25.2],[26.4,-28.7],[29.8,-32.4],[33.4,-36.4]]},
+  {zone:'4', ewa:50, values:[[7.8,-8.6],[8.7,-9.5],[9.7,-10.6],[10.7,-11.7],[11.7,-12.8],[12.8,-14.0],[13.9,-15.2],[16.3,-17.9],[18.9,-20.7],[21.7,-23.8],[24.7,-27.1],[27.9,-30.6],[31.3,-34.3]]},
+  {zone:'4', ewa:100, values:[[7.4,-8.2],[8.3,-9.1],[9.2,-10.1],[10.1,-11.1],[11.1,-12.2],[12.1,-13.3],[13.2,-14.5],[15.5,-17.1],[18.0,-19.8],[20.7,-22.7],[23.5,-25.8],[26.5,-29.2],[29.7,-32.7]]},
+  {zone:'5', ewa:10, values:[[8.7,-11.7],[9.7,-13.0],[10.8,-14.5],[11.9,-15.9],[13.1,-17.5],[14.3,-19.1],[15.5,-20.8],[18.2,-24.4],[21.2,-28.3],[24.3,-32.5],[27.6,-37.0],[31.2,-41.8],[35.0,-46.8]]},
+  {zone:'5', ewa:20, values:[[8.3,-10.9],[9.3,-12.2],[10.3,-13.5],[11.4,-14.9],[12.5,-16.3],[13.6,-17.8],[14.8,-19.4],[17.4,-22.8],[20.2,-26.4],[23.2,-30.3],[26.4,-34.5],[29.8,-39.0],[33.4,-43.7]]},
+  {zone:'5', ewa:50, values:[[7.8,-9.9],[8.7,-11.0],[9.7,-12.2],[10.7,-13.4],[11.7,-14.8],[12.8,-16.1],[13.9,-17.6],[16.3,-20.6],[18.9,-23.9],[21.7,-27.4],[24.7,-31.2],[27.9,-35.2],[31.3,-39.5]]},
+  {zone:'5', ewa:100, values:[[7.4,-9.1],[8.3,-10.1],[9.2,-11.2],[10.1,-12.4],[11.1,-13.6],[12.1,-14.8],[13.2,-16.2],[15.5,-19.0],[18.0,-22.0],[20.7,-25.2],[23.5,-28.7],[26.5,-32.4],[29.7,-36.4]]}
+];
+
+const R301_2_3_HEIGHT_EXPOSURE = {
+  15:{B:0.82,C:1.21,D:1.47},
+  20:{B:0.89,C:1.29,D:1.55},
+  25:{B:0.94,C:1.35,D:1.61},
+  30:{B:1.00,C:1.40,D:1.66},
+  35:{B:1.05,C:1.45,D:1.70},
+  40:{B:1.06,C:1.49,D:1.74},
+  45:{B:1.10,C:1.53,D:1.78},
+  50:{B:1.13,C:1.56,D:1.81},
+  55:{B:1.16,C:1.59,D:1.84},
+  60:{B:1.19,C:1.62,D:1.87}
+};
+const R301_2_3_HEIGHT_ROWS = Object.keys(R301_2_3_HEIGHT_EXPOSURE).map(Number);
+
+const R301_2_4_GARAGE_WIND_SPEEDS = [100,110,120,130,140,150,160,170,180,190,200];
+const R301_2_4_GARAGE_ROWS = [
+  {size:'9 ft x 7 ft', widthFt:9, heightFt:7, values:[[10.0,-10.9],[11.4,-12.9],[13.7,-15.5],[16.1,-18.2],[18.5,-20.9],[21.3,-24.1],[24.3,-27.5],[27.6,-31.2],[30.6,-34.6],[34.2,-38.6],[38.0,-43.0]]},
+  {size:'16 ft x 7 ft', widthFt:16, heightFt:7, values:[[10.0,-10.3],[10.9,-12.2],[13.1,-14.6],[15.5,-17.2],[17.7,-19.7],[20.4,-22.7],[23.3,-26.0],[26.4,-29.4],[29.3,-32.6],[32.7,-36.5],[36.4,-40.6]]}
+];
+
+function buildSpeedMap(rows, speeds){
+  return rows.reduce((acc,row)=>{
+    if(!acc[row.zone || row.size]) acc[row.zone || row.size] = {};
+    acc[row.zone || row.size][row.ewa || row.size] = row.values.reduce((speedAcc,pair,idx)=>{
+      speedAcc[speeds[idx]] = {pos:pair[0], neg:pair[1]};
+      return speedAcc;
+    }, {});
+    return acc;
+  }, {});
+}
+
+const R301_2_2_WALLS_ASD_B30 = buildSpeedMap(R301_2_2_WALL_TABLE_ROWS, R301_2_2_WIND_SPEEDS);
+const R301_2_4_GARAGE_ASD_B30 = buildSpeedMap(R301_2_4_GARAGE_ROWS, R301_2_4_GARAGE_WIND_SPEEDS);
+
+function nextHigherTableColumn(values, actual){
+  for(const value of values){
+    if(actual <= value) return value;
+  }
+  return null;
+}
+
+function lowerEffectiveWindAreaRow(ewa){
+  if(ewa <= R301_2_2_EWA_ROWS[0]) return R301_2_2_EWA_ROWS[0];
+  if(ewa > R301_2_2_EWA_ROWS[R301_2_2_EWA_ROWS.length-1]) return null;
+  return R301_2_2_EWA_ROWS.reduce((selected,row)=>ewa >= row ? row : selected, R301_2_2_EWA_ROWS[0]);
+}
+
+function heightExposureLookup(h, exp){
+  const heightRow = nextHigherTableColumn(R301_2_3_HEIGHT_ROWS, h);
+  const coeff = heightRow && R301_2_3_HEIGHT_EXPOSURE[heightRow][exp];
+  if(!heightRow || !coeff){
+    throw new Error(`No Table R301.2(3) height/exposure coefficient is available for height ${h} ft and Exposure ${exp}.`);
+  }
+  return {heightRow, coeff};
+}
+
+function applyMinimumDesignPressure(pos, neg){
+  return {
+    pos: Math.max(pos, 10),
+    neg: -Math.max(Math.abs(neg), 10)
+  };
+}
+
+function computeWallRequiredPressures(V, h, exp, ewa, zone){
+  const windColumn = nextHigherTableColumn(R301_2_2_WIND_SPEEDS, V);
+  if(!windColumn){
+    throw new Error(`Table R301.2(2) wall lookup only includes wind-speed columns through 180 mph. Non-garage openings above 180 mph require project-specific engineering.`);
+  }
+  const ewaRow = lowerEffectiveWindAreaRow(ewa);
+  if(!ewaRow){
+    throw new Error(`Opening effective wind area ${ewa.toFixed(1)} sf exceeds the 100 sf maximum row embedded from Table R301.2(2). This opening requires project-specific engineering or a verified code-table path outside this tool.`);
+  }
+  const {heightRow, coeff} = heightExposureLookup(h, exp);
+  const tableZone = zone === '5' ? '5' : '4';
+  const base = R301_2_2_WALLS_ASD_B30[tableZone][ewaRow][windColumn];
+  const adjusted = applyMinimumDesignPressure(base.pos * coeff, base.neg * coeff);
+  return {
+    pos: adjusted.pos,
+    neg: adjusted.neg,
+    source: `Table R301.2(2) Walls Z${tableZone}, V=${windColumn} mph, EWA=${ewaRow} sf; Table R301.2(3) h=${heightRow} ft Exposure ${exp} x ${coeff}`,
+    basePos: base.pos,
+    baseNeg: base.neg
+  };
+}
+
+function garageDoorRow(widthIn, heightIn){
+  const widthFt = widthIn / 12;
+  const heightFt = heightIn / 12;
+  return R301_2_4_GARAGE_ROWS.find(row=>
+    Math.abs(widthFt - row.widthFt) < 0.01 &&
+    Math.abs(heightFt - row.heightFt) < 0.01
+  );
+}
+
+function computeGarageRequiredPressures(V, h, exp, widthIn, heightIn){
+  const garageRow = garageDoorRow(widthIn, heightIn);
+  if(!garageRow){
+    throw new Error(`Table R301.2(4) garage-door lookup is embedded only for 9 ft x 7 ft and 16 ft x 7 ft doors. Enter one of those exact sizes or use project-specific engineering.`);
+  }
+  const windColumn = nextHigherTableColumn(R301_2_4_GARAGE_WIND_SPEEDS, V);
+  if(!windColumn){
+    throw new Error(`Table R301.2(4) garage-door lookup only includes wind-speed columns through 200 mph.`);
+  }
+  const {heightRow, coeff} = heightExposureLookup(h, exp);
+  const base = R301_2_4_GARAGE_ASD_B30[garageRow.size][garageRow.size][windColumn];
+  const adjusted = applyMinimumDesignPressure(base.pos * coeff, base.neg * coeff);
+  return {
+    pos: adjusted.pos,
+    neg: adjusted.neg,
+    source: `Table R301.2(4) ${garageRow.size}, V=${windColumn} mph; Table R301.2(3) h=${heightRow} ft Exposure ${exp} x ${coeff}`,
+    basePos: base.pos,
+    baseNeg: base.neg
+  };
+}
+
+function computeRequiredPressures(V, h, exp, opening, ewa){
+  if(opening.type === 'garage'){
+    return computeGarageRequiredPressures(V, h, exp, opening.w_in, opening.h_in);
+  }
+  return computeWallRequiredPressures(V, h, exp, ewa, opening.zone);
+}
+
+// Zone 5 width 'a' per ASCE 7-22 (low-rise C&C)
+// a = min(10% of least horizontal dim, 0.4h), not less than 3 ft or 4% of LHD
+function zone5Width(wallLen, h){
+  const a1 = 0.10 * wallLen;
+  const a2 = 0.40 * h;
+  const aMin = Math.max(3, 0.04 * wallLen);
+  return Math.max(Math.min(a1, a2), aMin);
+}
+
+// =====================================================================
+// DP string parser
+// =====================================================================
+function parseDp(s){
+  if(!s) return null;
+  const nums = String(s).match(/[+-]?\d+(?:\.\d+)?/g);
+  if(!nums || nums.length<2) return null;
+  return { pos: Math.abs(parseFloat(nums[0])), neg: -Math.abs(parseFloat(nums[1])) };
+}
+
+function fmtDp(pos, neg){
+  return `+${pos.toFixed(1)} / ${neg.toFixed(1)}`;
+}
+
+// =====================================================================
+// DOM helpers
+// =====================================================================
+const $ = id => document.getElementById(id);
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// =====================================================================
+// Step navigation
+// =====================================================================
+function goStep(n){
+  ['step-1','step-2','step-3','step-4','step-oos'].forEach(id=>$(id).classList.remove('active'));
+  $(`step-${n}`).classList.add('active');
+  state.step = n;
+  // Update progress bar
+  if(typeof n === 'number'){
+    document.querySelectorAll('.pstep').forEach(el=>{
+      const s = parseInt(el.dataset.step);
+      el.classList.remove('active','done');
+      if(s < n) el.classList.add('done');
+      else if(s === n) el.classList.add('active');
+    });
+  }
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function showOOS(reason){
+  $('oos-reason-text').innerHTML = `<strong>Why this project is out of scope:</strong><br>${esc(reason)}`;
+  goStep('oos');
+}
+
+// =====================================================================
+// Step 1: Eligibility
+// =====================================================================
+$('eligibility-confirm').addEventListener('change', e=>{
+  $('btn-step1-next').disabled = !e.target.checked;
+});
+$('btn-step1-next').addEventListener('click', ()=>goStep(2));
+
+// =====================================================================
+// Step 2: Project Info
+// =====================================================================
+// Populate county dropdown
+const countySel = $('f-county');
+FL_COUNTIES.forEach(c=>{
+  const opt = document.createElement('option');
+  opt.value = c.n;
+  opt.textContent = c.n + (c.hvhz ? ' (HVHZ — not supported)' : '');
+  countySel.appendChild(opt);
+});
+
+$('f-county').addEventListener('change', e=>{
+  const c = FL_COUNTIES.find(c=>c.n === e.target.value);
+  if(!c) return;
+  if(c.hvhz){
+    showOOS(`${c.n} County is in the High-Velocity Hurricane Zone (HVHZ). HVHZ projects require Miami-Dade NOA products and PE-sealed installation engineering. The simplified-method worksheet is not accepted here.`);
+    return;
+  }
+  // Pre-fill wind speed hint
+  $('vult-hint').innerHTML = `Typical for ${c.n} County: <strong>${c.v} mph</strong>. <em>Always verify the exact value for your address using the ASCE Hazard Tool.</em>`;
+});
+
+$('f-wall').addEventListener('input', updateZone5Display);
+$('f-height').addEventListener('input', updateZone5Display);
+
+function updateZone5Display(){
+  const w = parseFloat($('f-wall').value);
+  const h = parseFloat($('f-height').value);
+  if(!w || !h || w < 10 || h < 5){
+    $('zone5-info').style.display = 'none';
+    return;
+  }
+  const a = zone5Width(w, h);
+  state.zone5Width = a;
+  $('zone5-width').textContent  = a.toFixed(1);
+  $('zone5-width-2').textContent = a.toFixed(1);
+  $('zone5-info').style.display = 'block';
+}
+
+$('btn-step2-back').addEventListener('click', ()=>goStep(1));
+$('btn-step2-next').addEventListener('click', ()=>{
+  // Capture state
+  state.address  = $('f-address').value.trim();
+  state.owner    = $('f-owner').value.trim();
+  state.county   = $('f-county').value;
+  state.vult     = parseFloat($('f-vult').value);
+  state.height   = parseFloat($('f-height').value);
+  state.exposure = $('f-exposure').value;
+  state.wallLen  = parseFloat($('f-wall').value);
+
+  // Validation
+  if(!state.address || !state.owner || !state.county){
+    alert('Please complete address, owner name, and county.');
+    return;
+  }
+  if(!state.vult || state.vult < 90 || state.vult > 200){
+    alert('Please enter a valid wind speed between 90 and 200 mph (look it up at ascehazardtool.org).');
+    return;
+  }
+  if(!state.height || state.height < 8 || state.height > 30){
+    if(state.height > 30){
+      showOOS(`Mean roof height of ${state.height} ft exceeds 30 ft. The simplified method is limited to single-story residential buildings.`);
+      return;
+    }
+    alert('Please enter a valid mean roof height between 8 and 30 feet.');
+    return;
+  }
+  if(!state.exposure){
+    alert('Please select an exposure category (B or C).');
+    return;
+  }
+  if(!state.wallLen || state.wallLen < 10){
+    alert('Please enter the longest exterior wall dimension (minimum 10 feet).');
+    return;
+  }
+  state.zone5Width = zone5Width(state.wallLen, state.height);
+
+  // Initialize one opening if empty
+  if(state.openings.length === 0) addOpening();
+  renderOpenings();
+  goStep(3);
+});
+
+// =====================================================================
+// Step 3: Openings
+// =====================================================================
+function addOpening(){
+  state.openings.push({
+    id: nextOpeningId++,
+    room: '',
+    type: 'window',
+    w_in: 36,
+    h_in: 60,
+    zone: '4',
+    mfr: '',
+    fl: '',
+    dp: '',
+    dpBasis: 'ASD'
+  });
+}
+
+function removeOpening(id){
+  state.openings = state.openings.filter(o=>o.id!==id);
+  if(state.openings.length === 0) addOpening();
+  renderOpenings();
+}
+
+function renderOpenings(){
+  const list = $('opening-list');
+  list.innerHTML = '';
+  state.openings.forEach((o, idx)=>{
+    const ewa_sf = (o.w_in * o.h_in) / 144;
+    const card = document.createElement('div');
+    card.className = 'opening-card';
+    card.innerHTML = `
+      <div class="opening-card-head">
+        <strong>Opening #${idx+1}</strong>
+        <button class="btn-mini" data-rid="${o.id}">Remove</button>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Room / location</label>
+          <input type="text" data-oid="${o.id}" data-prop="room" value="${esc(o.room)}" placeholder="e.g. Master bedroom">
+        </div>
+        <div class="field">
+          <label>Type</label>
+          <select data-oid="${o.id}" data-prop="type">
+            <option value="window" ${o.type==='window'?'selected':''}>Window</option>
+            <option value="door" ${o.type==='door'?'selected':''}>Door</option>
+            <option value="slider" ${o.type==='slider'?'selected':''}>Sliding glass door</option>
+            <option value="garage" ${o.type==='garage'?'selected':''}>Garage door</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Width (inches)</label>
+          <input type="number" data-oid="${o.id}" data-prop="w_in" value="${o.w_in}" min="12" max="240">
+        </div>
+        <div class="field">
+          <label>Height (inches)</label>
+          <input type="number" data-oid="${o.id}" data-prop="h_in" value="${o.h_in}" min="12" max="240">
+        </div>
+      </div>
+      <div class="field">
+        <label>Zone (corner or interior?)</label>
+        <select data-oid="${o.id}" data-prop="zone">
+          <option value="4" ${o.zone==='4'?'selected':''}>Zone 4 — Interior wall (not within ${state.zone5Width?state.zone5Width.toFixed(1):'a'} ft of a corner)</option>
+          <option value="5" ${o.zone==='5'?'selected':''}>Zone 5 — Corner (within ${state.zone5Width?state.zone5Width.toFixed(1):'a'} ft of a building corner)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Manufacturer + product name</label>
+        <input type="text" data-oid="${o.id}" data-prop="mfr" value="${esc(o.mfr)}" placeholder="e.g. PGT WinGuard SH700">
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Florida Product Approval # (FL#)</label>
+          <input type="text" data-oid="${o.id}" data-prop="fl" value="${esc(o.fl)}" placeholder="e.g. FL12345.1-R2">
+        </div>
+        <div class="field">
+          <label>Tested DP basis</label>
+          <select data-oid="${o.id}" data-prop="dpBasis">
+            <option value="ASD" ${o.dpBasis==='ASD'?'selected':''}>ASD (typical)</option>
+            <option value="LRFD" ${o.dpBasis==='LRFD'?'selected':''}>LRFD / Strength</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Tested Design Pressure (DP) from product approval</label>
+        <input type="text" data-oid="${o.id}" data-prop="dp" value="${esc(o.dp)}" placeholder="e.g. +45/-55 psf">
+        <span class="hint">EWA for this opening: ${ewa_sf.toFixed(1)} sf</span>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+
+  // Wire up input change handlers
+  list.querySelectorAll('input,select').forEach(el=>{
+    el.addEventListener('input', e=>{
+      const oid = parseInt(e.target.dataset.oid);
+      const prop = e.target.dataset.prop;
+      const opening = state.openings.find(o=>o.id===oid);
+      if(!opening) return;
+      let v = e.target.value;
+      if(['w_in','h_in'].includes(prop)) v = parseFloat(v)||0;
+      opening[prop] = v;
+      // Re-render only if EWA changed (size)
+      if(['w_in','h_in'].includes(prop)){
+        const card = el.closest('.opening-card');
+        const ewa_sf = (opening.w_in * opening.h_in) / 144;
+        card.querySelector('.hint').textContent = `EWA for this opening: ${ewa_sf.toFixed(1)} sf`;
+      }
+    });
+  });
+  // Remove buttons
+  list.querySelectorAll('.btn-mini').forEach(b=>{
+    b.addEventListener('click', e=>removeOpening(parseInt(e.target.dataset.rid)));
+  });
+}
+
+$('btn-add-opening').addEventListener('click', ()=>{
+  addOpening();
+  renderOpenings();
+});
+
+$('btn-step3-back').addEventListener('click', ()=>goStep(2));
+$('btn-step3-next').addEventListener('click', ()=>{
+  // Validate openings
+  if(state.openings.length === 0){
+    alert('Add at least one window or door.');
+    return;
+  }
+  for(const o of state.openings){
+    if(!o.room || !o.mfr || !o.fl || !o.dp){
+      alert(`Opening #${state.openings.indexOf(o)+1} is missing required information. Please complete all fields.`);
+      return;
+    }
+  }
+  try{
+    renderWorksheet();
+    goStep(4);
+  } catch(err){
+    alert(err.message || String(err));
+  }
+});
+
+// =====================================================================
+// Step 4: Worksheet rendering
+// =====================================================================
+function renderWorksheet(){
+  const today = new Date().toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'});
+
+  // Compute pressures + pass/fail for each opening
+  const rows = state.openings.map((o, idx)=>{
+    const ewa_sf = (o.w_in * o.h_in) / 144;
+    const p = computeRequiredPressures(state.vult, state.height, state.exposure, o, ewa_sf);
+    const req_pos = p.pos;
+    const req_neg = p.neg;
+
+    // Parse manufacturer DP
+    const parsedDp = parseDp(o.dp);
+    let listed_pos = null, listed_neg = null;
+    if(parsedDp){
+      if(o.dpBasis === 'LRFD'){
+        // Convert LRFD-listed DP to ASD for comparison
+        listed_pos = parsedDp.pos * 0.6;
+        listed_neg = parsedDp.neg * 0.6;
+      } else {
+        listed_pos = parsedDp.pos;
+        listed_neg = parsedDp.neg;
+      }
+    }
+
+    let status = 'unknown';
+    if(listed_pos !== null){
+      const posPass = listed_pos >= req_pos;
+      const negPass = Math.abs(listed_neg) >= Math.abs(req_neg);
+      status = (posPass && negPass) ? 'pass' : 'fail';
+    }
+
+    return {
+      idx: idx+1, room: o.room, type: o.type,
+      w_in: o.w_in, h_in: o.h_in, ewa_sf,
+      zone: o.zone,
+      mfr: o.mfr, fl: o.fl,
+      dpRaw: o.dp, dpBasis: o.dpBasis,
+      listed_pos, listed_neg,
+      req_pos, req_neg,
+      lookupSource: p.source,
+      basePos: p.basePos,
+      baseNeg: p.baseNeg,
+      status
+    };
+  });
+
+  // Build table HTML
+  const tableRows = rows.map(r=>{
+    const badge = r.status === 'pass'
+      ? `<span class="badge badge-pass">Pass</span>`
+      : r.status === 'fail'
+      ? `<span class="badge badge-fail">Fail</span>`
+      : `<span class="badge badge-warn">Check</span>`;
+    const listedStr = (r.listed_pos !== null)
+      ? `+${r.listed_pos.toFixed(1)} / ${r.listed_neg.toFixed(1)}${r.dpBasis==='LRFD'?' *':''}`
+      : esc(r.dpRaw);
+    return `<tr>
+      <td>${r.idx}</td>
+      <td>${esc(r.room)}</td>
+      <td>${esc(r.type)}</td>
+      <td>${r.w_in}×${r.h_in}</td>
+      <td>${r.ewa_sf.toFixed(1)}</td>
+      <td>${r.type === 'garage' ? 'N/A' : 'Z' + r.zone}</td>
+      <td>+${r.req_pos.toFixed(1)} / ${r.req_neg.toFixed(1)}
+        <span class="lookup-note">Base +${r.basePos.toFixed(1)} / ${r.baseNeg.toFixed(1)}; ${esc(r.lookupSource)}</span>
+      </td>
+      <td>${listedStr}</td>
+      <td>${esc(r.fl)}</td>
+      <td>${badge}</td>
+    </tr>`;
+  }).join('');
+
+  const failCount = rows.filter(r=>r.status === 'fail').length;
+  const failBanner = failCount > 0
+    ? `<div class="callout callout-danger no-print"><strong>⚠ ${failCount} opening(s) FAIL the wind pressure check.</strong>The listed design pressure is lower than the required design pressure. You must either select different products or contact a PE.</div>`
+    : `<div class="callout callout-ok no-print"><strong>✓ All openings PASS the wind pressure check.</strong>The selected products meet or exceed the required pressures per FBC R301.2(2) for this project.</div>`;
+
+  const hasLrfd = rows.some(r=>r.dpBasis === 'LRFD');
+
+  const out = `
+    ${failBanner}
+    <div class="worksheet">
+      <h2>Window / Door Replacement Worksheet</h2>
+      <p style="text-align:center;margin:0 0 1rem;font-size:0.8rem;color:var(--muted);">FBC R301.2(2) Simplified Method · Single-Family Detached Residence · Owner-Builder Permit</p>
+
+      <h3>Project Information</h3>
+      <div class="ws-row"><span class="ws-label">Site address:</span><span>${esc(state.address)}</span></div>
+      <div class="ws-row"><span class="ws-label">Property owner:</span><span>${esc(state.owner)}</span></div>
+      <div class="ws-row"><span class="ws-label">County:</span><span>${esc(state.county)}, Florida</span></div>
+      <div class="ws-row"><span class="ws-label">Date prepared:</span><span>${today}</span></div>
+
+      <h3>Building Wind Design Data</h3>
+      <div class="ws-row"><span class="ws-label">Ultimate design wind speed (V<sub>ult</sub>):</span><span>${state.vult} mph</span></div>
+      <div class="ws-row"><span class="ws-label">Exposure category:</span><span>${state.exposure}</span></div>
+      <div class="ws-row"><span class="ws-label">Mean roof height (h):</span><span>${state.height} ft</span></div>
+      <div class="ws-row"><span class="ws-label">Risk Category:</span><span>II (single-family residential)</span></div>
+      <div class="ws-row"><span class="ws-label">Enclosure classification:</span><span>Enclosed</span></div>
+      <div class="ws-row"><span class="ws-label">Longest wall dimension:</span><span>${state.wallLen} ft</span></div>
+      <div class="ws-row"><span class="ws-label">Zone 5 corner width 'a':</span><span>${state.zone5Width.toFixed(1)} ft</span></div>
+      <div class="ws-row"><span class="ws-label">Pressure reporting basis:</span><span>ASD (allowable stress design, per FBC R301.2(2))</span></div>
+      <div class="ws-row"><span class="ws-label">Lookup method:</span><span>Embedded FBC table rows only; no pressure equations or interpolated pressure values</span></div>
+
+      <h3>Opening Schedule &amp; Pressure Verification</h3>
+      <table>
+        <thead><tr>
+          <th>#</th>
+          <th>Location</th>
+          <th>Type</th>
+          <th>Size (in)</th>
+          <th>EWA (sf)</th>
+          <th>Zone</th>
+          <th>Required DP (psf, ASD)</th>
+          <th>Listed DP (psf)</th>
+          <th>FL Approval #</th>
+          <th>Status</th>
+        </tr></thead>
+        <tbody>${tableRows}</tbody>
+      </table>
+      ${hasLrfd ? `<p style="font-size:0.72rem;color:var(--muted);">* Listed DP converted from LRFD to ASD using ×0.6 factor (FBC §1609.1.5)</p>` : ''}
+
+      <h3>Method Used (check one)</h3>
+      <div class="cert-block">
+        <p style="margin:0.3rem 0;"><strong>☒ Method 1:</strong> Florida Product Approval design pressures that meet or exceed the required design pressures per FBC Residential Code Table R301.2(2).</p>
+        <p style="margin:0.3rem 0;color:var(--muted);">☐ Method 2: Opening protection (shutters) with tested DP ≥ -60/+60 psf.</p>
+        <p style="margin:0.3rem 0;color:var(--muted);">☐ Method 3: Signed and sealed engineering letter prepared by a Florida-licensed PE.</p>
+      </div>
+
+      <h3>Owner-Builder Certification</h3>
+      <div class="cert-block">
+        <p>I, <strong>${esc(state.owner)}</strong>, the owner of the property located at <strong>${esc(state.address)}</strong>, certify the following:</p>
+        <ol style="margin:0.4rem 0 0.4rem 1.2rem;padding:0;">
+          <li>The property described above is my primary residence and is held in my personal name.</li>
+          <li>I am applying for this permit as an Owner-Builder under Florida Statute 489.103(7) and acknowledge the responsibilities and disclosures required by that statute.</li>
+          <li>I have determined the required design wind pressures for each opening using FBC Residential Code Table R301.2(2) (simplified method) as referenced above.</li>
+          <li>The Florida Product Approvals listed for each opening reflect tested design pressures that meet or exceed the required values shown.</li>
+          <li>I will install the products in strict accordance with the manufacturer's published installation instructions and the limitations of the Florida Product Approval.</li>
+          <li>I acknowledge that this worksheet is a code-table lookup aid and not engineering certification. I have not consulted a licensed Professional Engineer for this scope of work.</li>
+        </ol>
+        <p style="margin-top:1rem;">Signature: <span class="sign-line"></span> Date: <span class="sign-line" style="min-width:120px;"></span></p>
+        <p>Printed name: <span class="sign-line"></span></p>
+      </div>
+
+      <div class="code-refs">
+        <strong>Code References</strong>
+        <ul style="margin:0.3rem 0 0 1rem;padding:0;">
+          <li>FBC Residential Code, 8th Edition (2023), Table R301.2(2) — Component and Cladding Design Wind Pressures</li>
+          <li>FBC Residential Code, 8th Edition (2023), Table R301.2(3) — Height and Exposure Adjustment Coefficients</li>
+          <li>FBC Residential Code, 8th Edition (2023), Figure R301.2(7) — Wall Zone Locations (Zone 4 / Zone 5)</li>
+          <li>FBC Building Code, 8th Edition (2023), §1609.1.5 — ASD Conversion (0.6 factor)</li>
+          <li>Florida Statute 553.842 — Product Approval</li>
+          <li>Florida Statute 489.103(7) — Owner-Builder Exemption</li>
+        </ul>
+        <p style="margin-top:0.5rem;font-style:italic;">Worksheet generated by the Florida Residential Window Replacement Worksheet tool, an open-source FBC R301.2(2) lookup utility maintained by Oasis Engineering LLC. This worksheet does not constitute engineering certification.</p>
+      </div>
+    </div>
+  `;
+  $('worksheet-output').innerHTML = out;
+}
+
+$('btn-step4-back').addEventListener('click', ()=>goStep(3));
+$('btn-print').addEventListener('click', ()=>window.print());
+$('btn-oos-back').addEventListener('click', ()=>{
+  // Clear the offending field that triggered OOS, send user back
+  goStep(state.step === 'oos' ? 2 : 1);
+});
+
+// =====================================================================
+// Initial render
+// =====================================================================
+goStep(1);
+
+</script>
+</body>
+</html>
